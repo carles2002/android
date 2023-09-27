@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import org.altbeacon.beacon.Beacon
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        var beaconInfoTextView = findViewById(R.id.beaconInfoTextView) as TextView
 
         // Inicializar el administrador de beacons
         beaconManager = BeaconManager.getInstanceForApplication(this)
@@ -52,6 +54,10 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
                     // Imprimir los beacons encontrados por consola
                     for (beacon in beacons) {
                         Log.d("Beacon1234", "Beacon encontrado: $beacon")
+                        val beaconInfo = "UUID: ${beacon.id1}, Major: ${beacon.id2}, Minor: ${beacon.id3}"
+
+                        beaconInfoTextView.text = beaconInfo // Actualizar el TextView con la información del beacon
+
                     }
                 }
             }

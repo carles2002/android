@@ -9,20 +9,20 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No hay beacons encontrados"
-        android:textSize="20sp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerInParent="true"
+        android:text="Lista de beacons"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/beaconInfoTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="16sp"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="20dp"
+        android:text=""
+        android:textSize="16sp" />
 
 
 </RelativeLayout>

@@ -1,12 +1,15 @@
 package com.example.beaconandroid
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.util.Log
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconConsumer
@@ -65,8 +68,11 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
         // Iniciar la detección de beacons en la región especificada
         beaconManager.bind(this)
-    }
 
+
+
+
+    }
 
 
 
@@ -84,6 +90,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         try {
             // Iniciar el monitoreo en la región
             beaconManager.startRangingBeaconsInRegion(Region("myRegion", null, null, null))
+            while(true){}
         } catch (e: Exception) {
             e.printStackTrace()
         }

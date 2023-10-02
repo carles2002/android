@@ -53,11 +53,26 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         beaconManager.addRangeNotifier(object : RangeNotifier {
             override fun didRangeBeaconsInRegion(beacons: MutableCollection<Beacon>?, region: Region?) {
                 if (beacons != null && beacons.isNotEmpty()) {
-                    // Imprimir los beacons encontrados por consola
                     for (beacon in beacons) {
                         Log.d("Beacon1234", "Beacon encontrado: $beacon")
+
+                        // Crear un nuevo objeto JSON para cada beacon detectado
+                        val jsonObject = JSONObject()
+                        jsonObject.put("clave1", beacon.id2) // Major en clave1
+                        jsonObject.put("clave2", beacon.id3) // Minor en clave2
+
+                        // Convertir el objeto JSON a una cadena
+                        val jsonData = jsonObject.toString()
+
+                        // Actualizar el TextView con la información del beacon
                         val beaconInfo = "UUID: ${beacon.id1}, Major: ${beacon.id2}, Minor: ${beacon.id3}"
-                        beaconInfoTextView.text = beaconInfo // Actualizar el TextView con la información del beacon
+                        beaconInfoTextView.text = beaconInfo
+
+                        // Enviar la solicitud HTTP en segundo plano con el JSON actualizado
+                        GlobalScope.launch(Dispatchers.IO) {
+                            val responseCode = sendHttpRequest(jsonData)
+                            // Procesar la respuesta aquí si es necesario
+                        }
                     }
                 }
             }
@@ -66,17 +81,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         // Iniciar la detección de beacons en la región especificada
         beaconManager.bind(this)
 
-        // Lanzar una corrutina para realizar la solicitud HTTP en segundo plano
-        GlobalScope.launch(Dispatchers.IO) {
-            val jsonObject = JSONObject()
-            jsonObject.put("clave1", "valor1")
-            jsonObject.put("clave2", "valor2")
 
-            // Realizar la solicitud HTTP en segundo plano
-            val responseCode = sendHttpRequest(jsonObject.toString())
-
-            // Procesar la respuesta aquí si es necesario
-        }
     }
 
     private fun sendHttpRequest(jsonData: String): Int {
@@ -98,7 +103,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 // La solicitud fue exitosa (código 200)
-                Log.e("Beacon1234", "Código de respuesta HTTP: $responseCode")
+                Log.d("Beacon1234", "Código de respuesta HTTP: $responseCode")
             } else {
                 // Ocurrió un error en la solicitud
 

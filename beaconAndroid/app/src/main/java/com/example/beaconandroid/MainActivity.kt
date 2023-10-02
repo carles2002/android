@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
     private fun sendHttpRequest(jsonData: String): Int {
         try {
-            val url = URL("http://192.168.0.60/bd/recibir_json.php")
+            val url = URL("http://192.168.0.56/bd/recibir_json.php")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "POST"
             connection.setRequestProperty("Content-Type", "application/json")

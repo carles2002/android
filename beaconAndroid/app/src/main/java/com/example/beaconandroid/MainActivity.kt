@@ -11,6 +11,7 @@ import org.altbeacon.beacon.Beacon
 import org.altbeacon.beacon.BeaconConsumer
 import org.altbeacon.beacon.BeaconManager
 import org.altbeacon.beacon.BeaconParser
+import org.altbeacon.beacon.Identifier
 import org.altbeacon.beacon.RangeNotifier
 import org.altbeacon.beacon.Region
 import org.altbeacon.beacon.service.BeaconService
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         beaconManager.beaconParsers.add(iBeaconParser)
 
         // Crear una región para detectar todos los beacons (UUID, major y minor en null)
-        val region = Region("myRegion", null, null, null)
+        val region = Region("myRegion", Identifier.parse("45505347-2d47-5449-2d50-524f592d3341"), null, null)
 
         Log.d("Beacon1234", "START")
 
@@ -86,7 +87,8 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
 
     private fun sendHttpRequest(jsonData: String): Int {
         try {
-            val url = URL("http://192.168.0.56/bd/recibir_json.php")
+            //URL a la que se va a enviar el POST
+            val url = URL("http://192.168.146.229/bd/recibir_json.php")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "POST"
             connection.setRequestProperty("Content-Type", "application/json")

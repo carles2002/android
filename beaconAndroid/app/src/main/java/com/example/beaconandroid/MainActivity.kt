@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
         // Crear una región para detectar todos los beacons (UUID, major y minor en null)
         val region = Region("myRegion", Identifier.parse("45505347-2d47-5449-2d50-524f592d3341"), null, null)
 
-        Log.d("Beacon1234", "START")
+        Log.d("Beacon1234", "START");
 
         // Arrancar servicio que crea beacons
         val intent = Intent(this, BeaconService::class.java)
@@ -55,25 +55,32 @@ class MainActivity : AppCompatActivity(), BeaconConsumer {
             override fun didRangeBeaconsInRegion(beacons: MutableCollection<Beacon>?, region: Region?) {
                 if (beacons != null && beacons.isNotEmpty()) {
                     for (beacon in beacons) {
-                        Log.d("Beacon1234", "Beacon encontrado: $beacon")
 
-                        // Crear un nuevo objeto JSON para cada beacon detectado
-                        val jsonObject = JSONObject()
-                        jsonObject.put("clave1", beacon.id2) // Major en clave1
-                        jsonObject.put("clave2", beacon.id3) // Minor en clave2
+                        // Volver a filtrar las ids para evitar solapamientos
 
-                        // Convertir el objeto JSON a una cadena
-                        val jsonData = jsonObject.toString()
+                        if (beacon.id1 == Identifier.parse("45505347-2d47-5449-2d50-524f592d3341")
+                            && beacon.id2 != Identifier.parse("37")){
 
-                        // Actualizar el TextView con la información del beacon
-                        val beaconInfo = "UUID: ${beacon.id1}, Major: ${beacon.id2}, Minor: ${beacon.id3}"
-                        beaconInfoTextView.text = beaconInfo
+                            Log.d("Beacon1234", "Beacon encontrado: $beacon")
+                            // Crear un nuevo objeto JSON para cada beacon detectado
+                            val jsonObject = JSONObject()
+                            jsonObject.put("clave1", beacon.id2) // Major en clave1
+                            jsonObject.put("clave2", beacon.id3) // Minor en clave2
 
-                        // Enviar la solicitud HTTP en segundo plano con el JSON actualizado
-                        GlobalScope.launch(Dispatchers.IO) {
-                            val responseCode = sendHttpRequest(jsonData)
-                            // Procesar la respuesta aquí si es necesario
+                            // Convertir el objeto JSON a una cadena
+                            val jsonData = jsonObject.toString()
+
+                            // Actualizar el TextView con la información del beacon
+                            val beaconInfo = "UUID: ${beacon.id1}, Major: ${beacon.id2}, Minor: ${beacon.id3}"
+                            beaconInfoTextView.text = beaconInfo
+
+                            // Enviar la solicitud HTTP en segundo plano con el JSON actualizado
+                            GlobalScope.launch(Dispatchers.IO) {
+                                val responseCode = sendHttpRequest(jsonData)
+                                // Procesar la respuesta aquí si es necesario
+                            }
                         }
+
                     }
                 }
             }
